@@ -5,6 +5,10 @@ import gpxpy
 import gpxpy.gpx
 from pathlib import Path
 
+
+SPLIT_DISTANCE = 300  # Split tracks if points are greater than 300m apart
+
+
 parser = argparse.ArgumentParser(description='Clean GPX tracks and split into multiple files.')
 parser.add_argument('input', nargs='+', help='a .gpx file to clean and split')
 args = parser.parse_args()
@@ -53,13 +57,16 @@ for infile in args.input:
         for track in gpx.tracks:
             for segment in track.segments:
                 # Create new segment, and write out the current one
-                new_segment = writeAndCreateNewFile(segment, infile.stem)
+                new_segment = writeAndCreateNewFile(new_segment, infile.stem)
 
-
-
-
-# 'gpsbabel', '-t', '-i', 'gpx', '-f', str(outfile), '-x', 'track,sdistance=0.3k', '-o', 'gpx', '-F', outfile
-
-                # for point in segment.points:
-
-                #     print 'Point at ({0},{1}) -> {2}'.format(point.latitude, point.longitude, point.elevation)
+                previous_point = None
+                for point in segment.points:
+                    if previous_point:
+                        if point.distance_2d(previous_point) > SPLIT_DISTANCE:
+                            # Start new segment
+                            new_segment = writeAndCreateNewFile(new_segment, infile.stem)
+                            
+                    previous_point = point
+                    new_segment.points.append(point)
+# Write final segment
+writeAndCreateNewFile(new_segment, infile.stem)
