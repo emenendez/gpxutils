@@ -27,7 +27,7 @@ def createUniqueFile(base_name, time):
     return makePath(file_name, i)
 
 def writeAndCreateNewFile(segment, base_name):
-    if segment is not None:
+    if segment is not None and segment.get_points_no() > 1:
         # Create new GPX file
         gpx = gpxpy.gpx.GPX()
 
