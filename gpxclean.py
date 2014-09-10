@@ -105,7 +105,7 @@ for infile in args.input:
                     previous_point = point
                     new_segment.points.append(point)
         # Write final segment
-        writeAndCreateNewFile(new_segment, infile.stem, current_track_name)
+        new_segment = writeAndCreateNewFile(new_segment, infile.stem, current_track_name)
 
         # Extract waypoints
         for waypoint in gpx.waypoints:
