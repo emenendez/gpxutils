@@ -15,7 +15,10 @@ args = parser.parse_args()
 
 
 def makePath(base_name, i):
-    return Path('{}_{:03d}.gpx'.format(base_name, i))
+    if i == 0:
+        return Path('{}.gpx'.format(base_name))
+    else:
+        return Path('{}_{:03d}.gpx'.format(base_name, i))
 
 def createUniqueFile(base_name, time=None, name=None):
     i = 0
@@ -41,7 +44,7 @@ def writeAndCreateNewFile(segment, base_name, track_name=None):
         track.segments.append(segment)
         
         time = segment.get_time_bounds().start_time
-        outfile = createUniqueFile(base_name, time, track_name)
+        outfile = createUniqueFile(base_name + '_track', time, track_name)
         with outfile.open('w') as output:
             output.write(gpx.to_xml())
     
