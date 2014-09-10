@@ -15,31 +15,33 @@ args = parser.parse_args()
 
 
 def makePath(base_name, i):
-    return Path('{} {:03d}.gpx'.format(base_name, i))
+    return Path('{}_{:03d}.gpx'.format(base_name, i))
 
-def createUniqueFile(base_name, time):
+def createUniqueFile(base_name, time=None, name=None):
     i = 0
     file_name = base_name
     if time:
-        file_name += ' ' + time.strftime('%Y-%m-%d %H.%M.%S')
+        file_name += '_' + time.strftime('%Y-%m-%d %H.%M.%S')
+    if name:
+        file_name += '_' + name
     while makePath(file_name, i).exists():
         i += 1
     return makePath(file_name, i)
 
-def writeAndCreateNewFile(segment, base_name):
+def writeAndCreateNewFile(segment, base_name, track_name=None):
     if segment is not None and segment.get_points_no() > 1:
         # Create new GPX file
         gpx = gpxpy.gpx.GPX()
 
         # Create first track in our GPX:
-        track = gpxpy.gpx.GPXTrack()
+        track = gpxpy.gpx.GPXTrack(name=track_name)
         gpx.tracks.append(track)
 
         # Add segment to our GPX track:
         track.segments.append(segment)
         
         time = segment.get_time_bounds().start_time
-        outfile = createUniqueFile(base_name, time)
+        outfile = createUniqueFile(base_name, time, track_name)
         with outfile.open('w') as output:
             output.write(gpx.to_xml())
     
@@ -60,6 +62,7 @@ def writeWaypoint(waypoint, base_name):
 
 
 new_segment = None
+current_track_name = None
 
 for infile in args.input:
     infile = Path(infile)
@@ -70,19 +73,20 @@ for infile in args.input:
         for track in gpx.tracks:
             for segment in track.segments:
                 # Create new segment, and write out the current one
-                new_segment = writeAndCreateNewFile(new_segment, infile.stem)
+                new_segment = writeAndCreateNewFile(new_segment, infile.stem, current_track_name)
+                current_track_name = track.name
 
                 previous_point = None
                 for point in segment.points:
                     if previous_point:
                         if point.distance_2d(previous_point) > SPLIT_DISTANCE:
                             # Start new segment
-                            new_segment = writeAndCreateNewFile(new_segment, infile.stem)
+                            new_segment = writeAndCreateNewFile(new_segment, infile.stem, current_track_name)
                             
                     previous_point = point
                     new_segment.points.append(point)
         # Write final segment
-        writeAndCreateNewFile(new_segment, infile.stem)
+        writeAndCreateNewFile(new_segment, infile.stem, current_track_name)
 
         # Extract waypoints
         for waypoint in gpx.waypoints:
