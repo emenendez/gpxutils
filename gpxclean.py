@@ -4,6 +4,7 @@ import argparse
 import gpxpy
 import gpxpy.gpx
 from pathlib import Path
+import string
 
 
 SPLIT_DISTANCE = 300  # Split tracks if points are greater than 300m apart
@@ -27,6 +28,12 @@ def createUniqueFile(base_name, time=None, name=None):
         file_name += '_' + time.strftime('%Y-%m-%d %H.%M.%S')
     if name:
         file_name += '_' + name
+    
+    # Create valid filename
+    file_name = file_name.replace('(', '').replace(')', '')  # Remove parens
+    valid_chars = '-_. {}{}'.format(string.ascii_letters, string.digits)
+    file_name = ''.join(c if c in valid_chars else '-' for c in file_name)
+
     while makePath(file_name, i).exists():
         i += 1
     return makePath(file_name, i)
