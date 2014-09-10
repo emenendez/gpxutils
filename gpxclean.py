@@ -5,13 +5,17 @@ import gpxpy
 import gpxpy.gpx
 from pathlib import Path
 import string
-
-
-SPLIT_DISTANCE = 300  # Split tracks if points are greater than 300m apart
-
+import sys
 
 parser = argparse.ArgumentParser(description='Clean GPX tracks and split into multiple files.')
+parser.add_argument('-s', '--split', type=int, default=300, help='Split tracks if points are greater than this distance apart (meters).')
+parser.add_argument('-T', '--time', action='store_true', dest='time', help='Use time in output filenames (default).')
+parser.add_argument('-t', '--no-time', action='store_false', dest='time', help='Do not use time in output filenames.')
+parser.add_argument('-N', '--name', action='store_true', dest='name', help='Use track/waypoint name in output filenames.')
+parser.add_argument('-n', '--no-name', action='store_false', dest='name', help='Do not use track/waypoint name in output filenames (default).')
+parser.add_argument('-l', '--max-filename-length', type=int, dest='length', default=50, help='Warn if output filename is longer than this number of characters.')
 parser.add_argument('input', nargs='+', help='a .gpx file to clean and split')
+parser.set_defaults(time=True, name=False)
 args = parser.parse_args()
 
 
@@ -24,9 +28,9 @@ def makePath(base_name, i):
 def createUniqueFile(base_name, time=None, name=None):
     i = 0
     file_name = base_name
-    if time:
+    if args.time and time:
         file_name += '_' + time.strftime('%Y-%m-%d %H.%M.%S')
-    if name:
+    if args.name and name:
         file_name += '_' + name
     
     # Create valid filename
@@ -36,7 +40,12 @@ def createUniqueFile(base_name, time=None, name=None):
 
     while makePath(file_name, i).exists():
         i += 1
-    return makePath(file_name, i)
+
+    file_name = makePath(file_name, i)
+    if args.length != 0 and len(str(file_name)) > args.length:
+        print('Warning: {} greater than {} characters.'.format(file_name, args.length), file=sys.stderr)
+
+    return file_name
 
 def writeAndCreateNewFile(segment, base_name, track_name=None):
     if segment is not None and segment.get_points_no() > 1:
@@ -89,7 +98,7 @@ for infile in args.input:
                 previous_point = None
                 for point in segment.points:
                     if previous_point:
-                        if point.distance_2d(previous_point) > SPLIT_DISTANCE:
+                        if point.distance_2d(previous_point) > args.split:
                             # Start new segment
                             new_segment = writeAndCreateNewFile(new_segment, infile.stem, current_track_name)
                             
