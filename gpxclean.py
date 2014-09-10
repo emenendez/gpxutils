@@ -59,7 +59,7 @@ def writeWaypoint(waypoint, base_name):
         # Append waypoint
         gpx.waypoints.append(waypoint)
 
-        outfile = createUniqueFile(base_name + ' waypoint', waypoint.time)
+        outfile = createUniqueFile(base_name + '_waypoint', waypoint.time, waypoint.name)
         with outfile.open('w') as output:
             output.write(gpx.to_xml())
 
