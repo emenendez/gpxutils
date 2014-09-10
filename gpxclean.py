@@ -46,6 +46,18 @@ def writeAndCreateNewFile(segment, base_name):
     # Return a new segment
     return gpxpy.gpx.GPXTrackSegment()
 
+def writeWaypoint(waypoint, base_name):
+    if waypoint:
+        # Create new GPX file
+        gpx = gpxpy.gpx.GPX()
+
+        # Append waypoint
+        gpx.waypoints.append(waypoint)
+
+        outfile = createUniqueFile(base_name + ' waypoint', waypoint.time)
+        with outfile.open('w') as output:
+            output.write(gpx.to_xml())
+
 
 new_segment = None
 
@@ -54,6 +66,7 @@ for infile in args.input:
     with infile.open() as gpx_file:
         gpx = gpxpy.parse(gpx_file)
 
+        # Extract tracks
         for track in gpx.tracks:
             for segment in track.segments:
                 # Create new segment, and write out the current one
@@ -68,5 +81,9 @@ for infile in args.input:
                             
                     previous_point = point
                     new_segment.points.append(point)
-# Write final segment
-writeAndCreateNewFile(new_segment, infile.stem)
+        # Write final segment
+        writeAndCreateNewFile(new_segment, infile.stem)
+
+        # Extract waypoints
+        for waypoint in gpx.waypoints:
+            writeWaypoint(waypoint, infile.stem)
