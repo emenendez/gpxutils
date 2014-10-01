@@ -85,7 +85,7 @@ current_track_name = None
 
 for infile in args.input:
     infile = Path(infile)
-    with infile.open() as gpx_file:
+    with infile.open(encoding='utf-8') as gpx_file:
         gpx = gpxpy.parse(gpx_file)
 
         # Extract tracks
