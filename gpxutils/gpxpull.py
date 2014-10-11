@@ -1,7 +1,7 @@
 #!python3
 
 from pathlib import Path
-import gpxclean
+import gpxutils.gpxclean
 
 
 class _DEFAULTS:
