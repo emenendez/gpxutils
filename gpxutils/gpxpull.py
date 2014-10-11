@@ -39,7 +39,7 @@ def main():
     parser.add_argument('-t', '--no-time', action='store_false', dest='time', help='Do not use time in output filenames.')
     parser.add_argument('-N', '--name', action='store_true', dest='name', help='Use track/waypoint name in output filenames.')
     parser.add_argument('-n', '--no-name', action='store_false', dest='name', help='Do not use track/waypoint name in output filenames (default).')
-    parser.add_argument('-l', '--max-filename-length', type=int, dest='length', default=_DEFAULTS.max_filename_length, help='Warn if output filename is longer than this number of characters.')
+    parser.add_argument('-l', '--max-filename-length', type=int, dest='length', default=_DEFAULTS.max_filename_length, help='Truncate output filename to this number of characters.')
     parser.add_argument('drive', nargs='+', type=Path, help='drive name of a USB-connected Garmin GPS')
     parser.set_defaults(time=_DEFAULTS.output_time, name=_DEFAULTS.output_name)
     args = parser.parse_args()

@@ -1,3 +1,5 @@
+#!/usr/local/bin/python3
+
 import gpxpy
 import gpxpy.gpx
 from pathlib import Path
@@ -13,13 +15,17 @@ class _DEFAULTS:
     max_filename_length = 50
 
 
-def makePath(base_dir, base_name, i):
+def makePath(base_dir, base_name, i, max_filename_length=_DEFAULTS.max_filename_length):
     if not base_dir.exists():
         base_dir.mkdir(parents=True)
 
     if i == 0:
+        if max_filename_length != 0:
+            base_name = base_name[0:max_filename_length - 4]
         return base_dir / '{}.gpx'.format(base_name)
     else:
+        if max_filename_length != 0:
+            base_name = base_name[0:max_filename_length - 8]
         return base_dir / '{}_{:03d}.gpx'.format(base_name, i)
 
 def createUniqueFile(base_name, time=None, name=None, output=_DEFAULTS.output, output_time=_DEFAULTS.output_time,
@@ -36,15 +42,11 @@ def createUniqueFile(base_name, time=None, name=None, output=_DEFAULTS.output, o
     valid_chars = '-_. {}{}'.format(string.ascii_letters, string.digits)
     file_name = ''.join(c if c in valid_chars else '-' for c in file_name)
 
-    while makePath(output, file_name, i).exists():
+    while makePath(output, file_name, i, max_filename_length).exists():
         i += 1
 
-    file_name = makePath(output, file_name, i)
-    if max_filename_length != 0 and len(str(file_name)) > max_filename_length:
-        print('Warning: {} greater than {} characters.'.format(file_name, max_filename_length), file=sys.stderr)
-
-    return file_name
-
+    return makePath(output, file_name, i, max_filename_length)
+    
 def writeAndCreateNewFile(segment, base_name, track_name=None, output=_DEFAULTS.output, output_time=_DEFAULTS.output_time,
                           output_name=_DEFAULTS.output_name, max_filename_length=_DEFAULTS.max_filename_length):
     if segment is not None and segment.get_points_no() > 1:
@@ -59,7 +61,7 @@ def writeAndCreateNewFile(segment, base_name, track_name=None, output=_DEFAULTS.
         track.segments.append(segment)
         
         time = segment.get_time_bounds().start_time
-        outfile = createUniqueFile(base_name + '_track', time, track_name, output, output_time, output_name, max_filename_length)
+        outfile = createUniqueFile(base_name + '_trk', time, track_name, output, output_time, output_name, max_filename_length)
         with outfile.open('w') as output:
             output.write(gpx.to_xml())
     
@@ -75,7 +77,7 @@ def writeWaypoint(waypoint, base_name, output=_DEFAULTS.output, output_time=_DEF
         # Append waypoint
         gpx.waypoints.append(waypoint)
 
-        outfile = createUniqueFile(base_name + '_waypoint', waypoint.time, waypoint.name, output_time, output_name, max_filename_length)
+        outfile = createUniqueFile(base_name + '_wpt', waypoint.time, waypoint.name, output_time, output_name, max_filename_length)
         with outfile.open('w') as output:
             output.write(gpx.to_xml())
 
@@ -122,7 +124,7 @@ def main():
     parser.add_argument('-t', '--no-time', action='store_false', dest='time', help='Do not use time in output filenames.')
     parser.add_argument('-N', '--name', action='store_true', dest='name', help='Use track/waypoint name in output filenames.')
     parser.add_argument('-n', '--no-name', action='store_false', dest='name', help='Do not use track/waypoint name in output filenames (default).')
-    parser.add_argument('-l', '--max-filename-length', type=int, dest='length', default=_DEFAULTS.max_filename_length, help='Warn if output filename is longer than this number of characters.')
+    parser.add_argument('-l', '--max-filename-length', type=int, dest='length', default=_DEFAULTS.max_filename_length, help='Truncate output filename to this number of characters.')
     parser.add_argument('input', nargs='+', type=Path, help='a .gpx file to clean and split')
     parser.set_defaults(time=_DEFAULTS.output_time, name=_DEFAULTS.output_name)
     args = parser.parse_args()
