@@ -16,6 +16,10 @@ Pull files from modern Garmin GPSes, clean, and split.
 Usage
 -----
 
+### Requirements
+
+- Python 3.4 or greater
+
 ### Installation
 
 	pip install git+https://github.com/emenendez/gpxutils.git
