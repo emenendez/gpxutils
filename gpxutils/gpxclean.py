@@ -92,7 +92,7 @@ def gpxclean(input, split=_DEFAULTS.split, output=_DEFAULTS.output, output_time=
         for track in gpx.tracks:
             for segment in track.segments:
                 # Create new segment, and write out the current one
-                new_segment = writeAndCreateNewFile(new_segment, infile.stem, current_track_name, output, output_time, output_name, max_filename_length)
+                new_segment = writeAndCreateNewFile(new_segment, input.stem, current_track_name, output, output_time, output_name, max_filename_length)
                 current_track_name = track.name
 
                 previous_point = None
@@ -100,19 +100,19 @@ def gpxclean(input, split=_DEFAULTS.split, output=_DEFAULTS.output, output_time=
                     if previous_point:
                         if point.distance_2d(previous_point) > split:
                             # Start new segment
-                            new_segment = writeAndCreateNewFile(new_segment, infile.stem, current_track_name, output, output_time, output_name, max_filename_length)
+                            new_segment = writeAndCreateNewFile(new_segment, input.stem, current_track_name, output, output_time, output_name, max_filename_length)
                             
                     previous_point = point
                     new_segment.points.append(point)
         # Write final segment
-        new_segment = writeAndCreateNewFile(new_segment, infile.stem, current_track_name, output, output_time, output_name, max_filename_length)
+        new_segment = writeAndCreateNewFile(new_segment, input.stem, current_track_name, output, output_time, output_name, max_filename_length)
 
         # Extract waypoints
         for waypoint in gpx.waypoints:
-            writeWaypoint(waypoint, infile.stem, output, output_time, output_name, max_filename_length)
+            writeWaypoint(waypoint, input.stem, output, output_time, output_name, max_filename_length)
 
 
-if __name__ == "__main__":
+def main():
     import argparse
 
     parser = argparse.ArgumentParser(description='Clean GPX tracks and split into multiple files.')
@@ -129,4 +129,7 @@ if __name__ == "__main__":
 
     for infile in args.input:
         gpxclean(input=infile, split=args.split, output=args.output, output_time=args.time, output_name=args.name, max_filename_length=args.length)
-        
+
+
+if __name__ == "__main__":
+    main()

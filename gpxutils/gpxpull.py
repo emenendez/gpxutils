@@ -29,7 +29,7 @@ def gpxpull(drive, split=_DEFAULTS.split, output=_DEFAULTS.output, output_time=_
         processFiles(gpxDir, split, output, output_time, output_name, max_filename_length)
 
 
-if __name__ == "__main__":
+def main():
     import argparse
 
     parser = argparse.ArgumentParser(description='Pull GPX files from modern Garmin GPSes, clean, and split.')
@@ -46,4 +46,7 @@ if __name__ == "__main__":
 
     for drive in args.drive:
         gpxpull(drive=drive, split=args.split, output=args.output, output_time=args.time, output_name=args.name, max_filename_length=args.length)
-        
+
+
+if __name__ == "__main__":
+    main()
