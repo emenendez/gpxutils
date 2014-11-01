@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
     name='gpxutils',
 
-    version='1.0.0',
+    version='1.0.1',
 
     description='Tools for working with GPX files',
     long_description=long_description,
@@ -39,7 +39,7 @@ setup(
 
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
 
-    install_requires=[],
+    install_requires=['gpxpy'],
 
     entry_points={
         'console_scripts': [
