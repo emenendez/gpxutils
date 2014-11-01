@@ -19,7 +19,7 @@ def processFiles(gpxDir, split=_DEFAULTS.split, output=_DEFAULTS.output, output_
             processFiles(file, split, output, output_time, output_name, max_filename_length)
         elif file.suffix.lower() == '.gpx':
             print(file)
-            gpxutils.gpxclean.gpxclean(file, split, output, output_time, output_name, max_filename_length)
+            gpxutils.gpxclean(file, split, output, output_time, output_name, max_filename_length)
 
 
 def gpxpull(drive, split=_DEFAULTS.split, output=_DEFAULTS.output, output_time=_DEFAULTS.output_time,
