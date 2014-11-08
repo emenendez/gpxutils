@@ -16,7 +16,7 @@ Pull files from modern Garmin GPSes, clean, and split.
 Usage
 -----
 
-```bash
+```Shell
 $ gpxclean --help
 
 usage: gpxcleant.py [-h] [-s SPLIT] [-o OUTPUT] [-T] [-t] [-N] [-n]
@@ -44,8 +44,9 @@ optional arguments:
                         Truncate output filename to this number of characters.
 ```
 
-```bash
+```Shell
 $ gpxpull --help
+
 usage: gpxpull.py [-h] [-s SPLIT] [-o OUTPUT] [-T] [-t] [-N] [-n]
                   [-l LENGTH] [-p]
                   drive [drive ...]
