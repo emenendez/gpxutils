@@ -32,4 +32,4 @@ Add the following to your USBDLM.ini:
 
 	[OnArrival1]
 	FileExists=%drive%\Garmin\GPX
-	open=gpxpull -o "C:\GPX-out\" %drive%
+	open="gpxpull" -o "C:\GPX-out\" %drive%
