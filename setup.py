@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
     name='gpxutils',
 
-    version='1.0.2',
+    version='1.1.1',
 
     description='Tools for working with GPX files',
     long_description=long_description,
