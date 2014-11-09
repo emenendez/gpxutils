@@ -11,12 +11,12 @@ Clean GPX tracks and split into multiple files.
 gpxpull
 -------
 
-Pull files from modern Garmin GPSes, clean, and split.
+Pull files from modern Garmin GPSes, clean, and split. On Windows, with the help of the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html), gpxpull can automatically download and clean GPX files from a USB-connected Garmin GPS.
 
 Usage
 -----
 
-```Shell
+```
 $ gpxclean --help
 
 usage: gpxcleant.py [-h] [-s SPLIT] [-o OUTPUT] [-T] [-t] [-N] [-n]
@@ -44,7 +44,7 @@ optional arguments:
                         Truncate output filename to this number of characters.
 ```
 
-```Shell
+```
 $ gpxpull --help
 
 usage: gpxpull.py [-h] [-s SPLIT] [-o OUTPUT] [-T] [-t] [-N] [-n]
@@ -75,18 +75,20 @@ optional arguments:
 
 ### Requirements
 
-- Python 3.4 or greater
+- Python 3.4 or newer
 
 ### Installation
 
-	pip install git+https://github.com/emenendez/gpxutils.git
+1. Install [Python 3.4](https://www.python.org/downloads/) or newer.
 
-### Windows
+2. Install gpxutils from a command prompt:  
+   `pip3 install git+https://github.com/emenendez/gpxutils.git`
 
-gpxpull can be used to automatically download and clean GPX files from a USB-connected Garmin GPS with the help of the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html).
+3. Install the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html).
 
-Add the following to your USBDLM.ini:
-
-	[OnArrival1]
-	FileExists=%drive%\Garmin\GPX
-	open="gpxpull" -o "C:\GPX-out\" %drive%
+4. Add the following to the end of `c:\Program Files\USBDLM\USBDLM.ini`:
+   ```
+[OnArrival1]
+FileExists=%drive%\Garmin\GPX
+open="gpxpull" -o "C:\GPX-out\" %drive%
+```
