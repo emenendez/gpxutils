@@ -19,14 +19,14 @@ Usage
 ```
 $ gpxclean --help
 
-usage: gpxcleant.py [-h] [-s SPLIT] [-o OUTPUT] [-T] [-t] [-N] [-n]
-                    [-l LENGTH]
-                    input [input ...]
+usage: gpxclean.py [-h] [-s SPLIT] [-o OUTPUT] [-t] [-n] [-l LENGTH]
+                   [-f [PREFIX]] [-d] [-i]
+                   input [input ...]
 
 Clean GPX tracks and split into multiple files.
 
 positional arguments:
-	  input                 a .gpx file to clean and split
+  input                 a .gpx file to clean and split
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -35,20 +35,23 @@ optional arguments:
                         apart (meters).
   -o OUTPUT, --output OUTPUT
                         Directory to place output .gpx files.
-  -T, --time            Use time in output filenames (default).
   -t, --no-time         Do not use time in output filenames.
-  -N, --name            Use track/waypoint name in output filenames.
-  -n, --no-name         Do not use track/waypoint name in output filenames
-                        (default).
+  -n, --name            Use track/waypoint name in output filenames.
   -l LENGTH, --max-filename-length LENGTH
                         Truncate output filename to this number of characters.
+  -f [PREFIX], --prefix [PREFIX]
+                        Add a prefix to all files, or prompt if none is
+                        specified.
+  -d, --date-directories
+                        Put files in subdirectories by date.
+  -i, --interactive     Prompt to save/discard each track.
 ```
 
 ```
 $ gpxpull --help
 
-usage: gpxpull.py [-h] [-s SPLIT] [-o OUTPUT] [-T] [-t] [-N] [-n]
-                  [-l LENGTH] [-p]
+usage: gpxpull.py [-h] [-s SPLIT] [-o OUTPUT] [-t] [-n] [-l LENGTH]
+                  [-f [PREFIX]] [-d] [-i] [-p]
                   drive [drive ...]
 
 Pull GPX files from modern Garmin GPSes, clean, and split.
@@ -63,13 +66,16 @@ optional arguments:
                         apart (meters).
   -o OUTPUT, --output OUTPUT
                         Directory to place output .gpx files.
-  -T, --time            Use time in output filenames (default).
   -t, --no-time         Do not use time in output filenames.
-  -N, --name            Use track/waypoint name in output filenames.
-  -n, --no-name         Do not use track/waypoint name in output filenames
-                        (default).
+  -n, --name            Use track/waypoint name in output filenames.
   -l LENGTH, --max-filename-length LENGTH
                         Truncate output filename to this number of characters.
+  -f [PREFIX], --prefix [PREFIX]
+                        Add a prefix to all files, or prompt if none is
+                        specified.
+  -d, --date-directories
+                        Put files in subdirectories by date.
+  -i, --interactive     Prompt to save/discard each track.
   -p, --pause           Prompt the user to press a key before exiting.
 ```
 
