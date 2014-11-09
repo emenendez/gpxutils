@@ -2,39 +2,53 @@
 
 import gpxpy
 import gpxpy.gpx
+from datetime import datetime
 from pathlib import Path
 import string
 import sys
+import gpxutils
 
 
-class _DEFAULTS:
-    split = 300
-    output = Path('.')
-    output_time = True
-    output_name = False
-    max_filename_length = 50
+def prompt(copy, time):
+    default = time.date() == datetime.now().date()
+    answer = input('Save {}? [{}] '.format(copy, 'Y/n' if default else 'y/N'))
+    answer = answer.strip().lower()
+    if answer == str():
+        return default
+    elif answer[0] == 'y':
+        return True
+    elif answer[0] == 'n':
+        return False
+    else:
+        return default
 
+def makePath(base_dir, base_name, i, **options):
+    gpxutils.applyDefaults(options)
 
-def makePath(base_dir, base_name, i, max_filename_length=_DEFAULTS.max_filename_length):
     if not base_dir.exists():
         base_dir.mkdir(parents=True)
 
     if i == 0:
-        if max_filename_length != 0:
-            base_name = base_name[0:max_filename_length - 4]
+        if options['max_filename_length'] != 0:
+            base_name = base_name[0:options['max_filename_length'] - 4]
         return base_dir / '{}.gpx'.format(base_name)
     else:
-        if max_filename_length != 0:
-            base_name = base_name[0:max_filename_length - 8]
+        if options['max_filename_length'] != 0:
+            base_name = base_name[0:options['max_filename_length'] - 8]
         return base_dir / '{}_{:03d}.gpx'.format(base_name, i)
 
-def createUniqueFile(base_name, time=None, name=None, output=_DEFAULTS.output, output_time=_DEFAULTS.output_time,
-                     output_name=_DEFAULTS.output_name, max_filename_length=_DEFAULTS.max_filename_length):
+def createUniqueFile(base_name, name_postfix, time=None, name=None, **options):
+    gpxutils.applyDefaults(options)
+
     i = 0
-    file_name = base_name
-    if output_time and time:
+    if options['file_prefix'] is not None:
+        file_name = options['file_prefix']
+    else:
+        file_name = base_name
+    file_name += '_' + name_postfix
+    if options['output_time'] and time:
         file_name += '_' + time.strftime('%Y-%m-%d %H.%M.%S')
-    if output_name and name:
+    if options['output_name'] and name:
         file_name += '_' + name
     
     # Create valid filename
@@ -42,13 +56,21 @@ def createUniqueFile(base_name, time=None, name=None, output=_DEFAULTS.output, o
     valid_chars = '-_. {}{}'.format(string.ascii_letters, string.digits)
     file_name = ''.join(c if c in valid_chars else '-' for c in file_name)
 
-    while makePath(output, file_name, i, max_filename_length).exists():
+    output = options['output']
+    if options['date']:
+        if time:
+            output /= time.strftime('%Y-%m-%d')
+        else:
+            output /= 'unknown date'
+
+    while makePath(output, file_name, i, **options).exists():
         i += 1
 
-    return makePath(output, file_name, i, max_filename_length)
+    return makePath(output, file_name, i, **options)
     
-def writeAndCreateNewFile(segment, base_name, track_name=None, output=_DEFAULTS.output, output_time=_DEFAULTS.output_time,
-                          output_name=_DEFAULTS.output_name, max_filename_length=_DEFAULTS.max_filename_length):
+def writeAndCreateNewFile(segment, base_name, track_name=None, **options):
+    gpxutils.applyDefaults(options)
+
     if segment is not None and segment.get_points_no() > 1:
         # Create new GPX file
         gpx = gpxpy.gpx.GPX()
@@ -61,15 +83,19 @@ def writeAndCreateNewFile(segment, base_name, track_name=None, output=_DEFAULTS.
         track.segments.append(segment)
         
         time = segment.get_time_bounds().start_time
-        outfile = createUniqueFile(base_name + '_trk', time, track_name, output, output_time, output_name, max_filename_length)
-        with outfile.open('w') as output:
-            output.write(gpx.to_xml())
-    
+
+        keep = (not options['interactive']) or prompt('track {} from {}.gpx @ {}'.format(track_name, base_name, time.strftime('%Y-%m-%d %H:%M')), time)
+        if keep:
+            outfile = createUniqueFile(base_name, 'trk', time, track_name, **options)
+            with outfile.open('w') as output:
+                output.write(gpx.to_xml())
+        
     # Return a new segment
     return gpxpy.gpx.GPXTrackSegment()
 
-def writeWaypoint(waypoint, base_name, output=_DEFAULTS.output, output_time=_DEFAULTS.output_time,
-                  output_name=_DEFAULTS.output_name, max_filename_length=_DEFAULTS.max_filename_length):
+def writeWaypoint(waypoint, base_name, **options):
+    gpxutils.applyDefaults(options)
+
     if waypoint:
         # Create new GPX file
         gpx = gpxpy.gpx.GPX()
@@ -77,13 +103,16 @@ def writeWaypoint(waypoint, base_name, output=_DEFAULTS.output, output_time=_DEF
         # Append waypoint
         gpx.waypoints.append(waypoint)
 
-        outfile = createUniqueFile(base_name + '_wpt', waypoint.time, waypoint.name, output_time, output_name, max_filename_length)
-        with outfile.open('w') as output:
-            output.write(gpx.to_xml())
+        keep = (not options['interactive']) or prompt('waypoint {} from {}.gpx @ {}'.format(waypoint.name, base_name, waypoint.time.strftime('%Y-%m-%d %H:%M')), waypoint.time)
+        if keep:
+            outfile = createUniqueFile(base_name, 'wpt', waypoint.time, waypoint.name, **options)
+            with outfile.open('w') as output:
+                output.write(gpx.to_xml())
 
 
-def gpxclean(input, split=_DEFAULTS.split, output=_DEFAULTS.output, output_time=_DEFAULTS.output_time,
-             output_name=_DEFAULTS.output_name, max_filename_length=_DEFAULTS.max_filename_length):
+def gpxclean(input, **options):
+    gpxutils.applyDefaults(options)
+
     new_segment = None
     current_track_name = None
 
@@ -94,43 +123,48 @@ def gpxclean(input, split=_DEFAULTS.split, output=_DEFAULTS.output, output_time=
         for track in gpx.tracks:
             for segment in track.segments:
                 # Create new segment, and write out the current one
-                new_segment = writeAndCreateNewFile(new_segment, input.stem, current_track_name, output, output_time, output_name, max_filename_length)
+                new_segment = writeAndCreateNewFile(new_segment, input.stem, current_track_name, **options)
                 current_track_name = track.name
 
                 previous_point = None
                 for point in segment.points:
                     if previous_point:
-                        if point.distance_2d(previous_point) > split:
+                        if point.distance_2d(previous_point) > options['split']:
                             # Start new segment
-                            new_segment = writeAndCreateNewFile(new_segment, input.stem, current_track_name, output, output_time, output_name, max_filename_length)
+                            new_segment = writeAndCreateNewFile(new_segment, input.stem, current_track_name, **options)
                             
                     previous_point = point
                     new_segment.points.append(point)
         # Write final segment
-        new_segment = writeAndCreateNewFile(new_segment, input.stem, current_track_name, output, output_time, output_name, max_filename_length)
+        new_segment = writeAndCreateNewFile(new_segment, input.stem, current_track_name, **options)
 
         # Extract waypoints
         for waypoint in gpx.waypoints:
-            writeWaypoint(waypoint, input.stem, output, output_time, output_name, max_filename_length)
+            writeWaypoint(waypoint, input.stem, **options)
 
 
 def main():
     import argparse
 
     parser = argparse.ArgumentParser(description='Clean GPX tracks and split into multiple files.')
-    parser.add_argument('-s', '--split', type=int, default=_DEFAULTS.split, help='Split tracks if points are greater than this distance apart (meters).')
-    parser.add_argument('-o', '--output', type=Path, default=_DEFAULTS.output, help='Directory to place output .gpx files.')
-    parser.add_argument('-T', '--time', action='store_true', dest='time', help='Use time in output filenames (default).')
+    parser.add_argument('-s', '--split', type=int, default=gpxutils.getDefault('split'), help='Split tracks if points are greater than this distance apart (meters).')
+    parser.add_argument('-o', '--output', type=Path, default=gpxutils.getDefault('output'), help='Directory to place output .gpx files.')
     parser.add_argument('-t', '--no-time', action='store_false', dest='time', help='Do not use time in output filenames.')
-    parser.add_argument('-N', '--name', action='store_true', dest='name', help='Use track/waypoint name in output filenames.')
-    parser.add_argument('-n', '--no-name', action='store_false', dest='name', help='Do not use track/waypoint name in output filenames (default).')
-    parser.add_argument('-l', '--max-filename-length', type=int, dest='length', default=_DEFAULTS.max_filename_length, help='Truncate output filename to this number of characters.')
+    parser.add_argument('-n', '--name', action='store_true', dest='name', help='Use track/waypoint name in output filenames.')
+    parser.add_argument('-l', '--max-filename-length', type=int, dest='length', default=gpxutils.getDefault('max_filename_length'), help='Truncate output filename to this number of characters.')
+    parser.add_argument('-f', '--prefix', nargs='?', default=gpxutils.getDefault('file_prefix'), const=str(), help='Add a prefix to all files, or prompt if none is specified.')
+    parser.add_argument('-d', '--date-directories', action='store_true', dest='date', help='Put files in subdirectories by date.')
+    parser.add_argument('-i', '--interactive', action='store_true', dest='interactive', help='Prompt to save/discard each track.')
     parser.add_argument('input', nargs='+', type=Path, help='a .gpx file to clean and split')
-    parser.set_defaults(time=_DEFAULTS.output_time, name=_DEFAULTS.output_name)
+    parser.set_defaults(time=gpxutils.getDefault('output_time'), name=gpxutils.getDefault('output_name'), date=gpxutils.getDefault('date'), interactive=gpxutils.getDefault('interactive'))
     args = parser.parse_args()
 
+    if args.prefix == str():
+        args.prefix = input('File prefix: ')
+
     for infile in args.input:
-        gpxclean(input=infile, split=args.split, output=args.output, output_time=args.time, output_name=args.name, max_filename_length=args.length)
+        gpxclean(input=infile, split=args.split, output=args.output, output_time=args.time, output_name=args.name, max_filename_length=args.length,
+                 file_prefix=args.prefix, date=args.date, interactive=args.interactive)
 
 
 if __name__ == "__main__":
