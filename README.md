@@ -75,7 +75,8 @@ optional arguments:
 
 ### Requirements
 
-- Python 3.4 or newer
+- [Python 3.4](https://www.python.org/) or newer
+- [gpxpy](https://github.com/tkrajina/gpxpy)
 
 ### Installation
 
