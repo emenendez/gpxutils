@@ -115,7 +115,7 @@ gpxutils itself is cross-platform by default. It should be possible to automate 
 #### 2.0.0
 
 - Added -f and -d options for more flexible file naming
-- Removed non-sensical track name and track time options
+- Removed nonsensical track name and track time options
 
 #### 1.1.1
 
