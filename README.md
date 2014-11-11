@@ -86,16 +86,27 @@ optional arguments:
 
 ### Installation
 
+#### Windows
+
 1. Install [Python 3.4](https://www.python.org/downloads/) or newer.
 
-2. Install gpxutils from a command prompt:  
+2. Install gpxutils from a Windows command prompt:  
    `pip3 install git+https://github.com/emenendez/gpxutils.git`
 
 3. Install the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html).
 
-4. Add the following to the end of `c:\Program Files\USBDLM\USBDLM.ini`:
+4. Create a new text file with the following and save it as `c:\Program Files\USBDLM\USBDLM.ini`.
    ```
 [OnArrival1]
 FileExists=%drive%\Garmin\GPX
 open="gpxpull" -o "C:\GPX-out\" %drive%
 ```
+
+#### Mac
+
+gpxutils itself is cross-platform by default. It should be possible to automate GPS downloads with an AppleScrit Folder Action; contact me if you have success or would like to try.
+
+#### Linux
+
+gpxutils itself is cross-platform by default. It should be possible to automate GPS downloads with a udev script; contaact me if you have success or would like to try.
+
