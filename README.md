@@ -95,7 +95,7 @@ optional arguments:
 
 3. Install the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html).
 
-4. Create a new text file with the following and save it as `c:\Program Files\USBDLM\USBDLM.ini`.
+4. Create a new text file with the following contents and save it as `c:\Program Files\USBDLM\USBDLM.ini`:
    ```
 [OnArrival1]
 FileExists=%drive%\Garmin\GPX
@@ -108,5 +108,15 @@ gpxutils itself is cross-platform by default. It should be possible to automate 
 
 #### Linux
 
-gpxutils itself is cross-platform by default. It should be possible to automate GPS downloads with a udev script; contaact me if you have success or would like to try.
+gpxutils itself is cross-platform by default. It should be possible to automate GPS downloads with a udev script; contact me if you have success or would like to try.
 
+### Changelog
+
+#### 2.0.0
+
+- Added -f and -d options for more flexible file naming
+- Removed non-sensical track name and track time options
+
+#### 1.1.1
+
+- Add -p option to pause for keypress after running gpxpull
