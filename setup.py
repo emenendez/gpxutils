@@ -4,17 +4,28 @@ from os import path
 
 here = path.abspath(path.dirname(__file__))
 
-# Get the long description from the relevant file
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
-
 setup(
     name='gpxutils',
 
-    version='2.0.0',
+    version='2.0.1',
 
     description='Tools for working with GPX files',
-    long_description=long_description,
+    long_description="""
+gpxutils
+========
+
+Tools for working with GPX files.
+
+gpxclean
+--------
+
+Clean GPX tracks and split into multiple files.
+
+gpxpull
+-------
+
+Pull files from modern Garmin GPSes, clean, and split. On Windows, with the help of the USB Drive Letter Manager (http://www.uwe-sieber.de/usbdlm_e.html), gpxpull can automatically download and clean GPX files from a USB-connected Garmin GPS.
+""",
 
     url='https://github.com/emenendez/gpxutils',
 
