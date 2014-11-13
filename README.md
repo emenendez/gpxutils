@@ -112,6 +112,10 @@ gpxutils itself is cross-platform by default. It should be possible to automate 
 
 ### Changelog
 
+#### 2.0.1
+
+- Fixed packaging bug for uploading to PyPI
+
 #### 2.0.0
 
 - Added -f and -d options for more flexible file naming
