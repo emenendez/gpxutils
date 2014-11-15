@@ -90,16 +90,19 @@ optional arguments:
 
 1. Install [Python 3.4](https://www.python.org/downloads/) or newer.
 
-2. Install gpxutils from a Windows command prompt:  
+2. Add the Python scripts directory to your system path. From a Windows command prompt:
+   `setx path "%path%;c:\python34\scripts"`
+
+3. Install gpxutils from a Windows command prompt:  
    `pip3 install gpxutils`
 
-3. Install the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html).
+4. Install the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html).
 
-4. Create a new text file with the following contents and save it as `c:\Program Files\USBDLM\USBDLM.ini`:
+5. Create a new text file with the following contents and save it as `c:\Program Files\USBDLM\USBDLM.ini`:
    ```
 [OnArrival1]
 FileExists=%drive%\Garmin\GPX
-open="gpxpull" -o "C:\GPX-out\" %drive%
+open="gpxpull" -o "C:\GPX-out" %drive%
 ```
 
 #### Mac
