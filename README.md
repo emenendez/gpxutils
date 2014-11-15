@@ -90,7 +90,7 @@ optional arguments:
 
 1. Install [Python 3.4](https://www.python.org/downloads/) or newer. Be sure to enable the "Add python.exe to Path" option.
 
-2. Install gpxutils from a Windows command prompt: 
+2. Install gpxutils from a Windows command prompt:  
    `pip3 install gpxutils`
 
 3. Install the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html).
