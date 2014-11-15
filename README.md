@@ -90,7 +90,7 @@ optional arguments:
 
 1. Install [Python 3.4](https://www.python.org/downloads/) or newer.
 
-2. Add the Python scripts directory to your system path. From a Windows command prompt:
+2. Add the Python scripts directory to your system path. From a Windows command prompt:  
    `setx path "%path%;c:\python34\scripts"`
 
 3. Install gpxutils from a Windows command prompt:  
