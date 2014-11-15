@@ -90,10 +90,10 @@ optional arguments:
 
 1. Install [Python 3.4](https://www.python.org/downloads/) or newer.
 
-2. Add the Python scripts directory to your system path. From a Windows command prompt:  
+2. Add the Python scripts directory to your system path. At a Windows command prompt, type:  
    `setx path "%path%;c:\python34\scripts"`
 
-3. Install gpxutils from a Windows command prompt:  
+3. Install gpxutils:  
    `pip3 install gpxutils`
 
 4. Install the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html).
