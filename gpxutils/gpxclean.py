@@ -26,7 +26,16 @@ def makePath(base_dir, base_name, i, **options):
     gpxutils.applyDefaults(options)
 
     if not base_dir.exists():
-        base_dir.mkdir(parents=True)
+        # Hack: remove trailing double-quote if present
+        if base_dir.name.endswith('"'):
+            base_dir = base_dir.with_name(base_dir.name[:-1])
+        if not base_dir.exists():
+            # Create output directory if possible
+            try:
+                base_dir.mkdir(parents=True)
+            except Exception:
+                print('Error: could not create output directory {}'.format(base_dir), file=sys.stderr)
+                exit()
 
     if i == 0:
         if options['max_filename_length'] != 0:
