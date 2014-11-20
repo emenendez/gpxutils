@@ -1,7 +1,7 @@
 gpxutils
 ========
 
-Tools for working with GPX files.
+gpxutils is a Python module and set of command-line tools to simplify working with Garmin GPSes and GPX files. It will help you automatically download GPS tracks and waypoints from a modern Garmin GPS and clean up the files, making your GPS workflow much faster.
 
 gpxclean
 --------
