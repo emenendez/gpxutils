@@ -6,7 +6,7 @@ Tools for working with GPX files.
 gpxclean
 --------
 
-Clean GPX tracks and split into multiple files.
+Remove "tails" from GPX tracks and save each track as an individual file with flexible naming options.
 
 gpxpull
 -------
@@ -104,13 +104,18 @@ open="gpxpull" -o "C:\GPX-out" %drive%
 
 #### Mac
 
-gpxutils itself is cross-platform by default. It should be possible to automate GPS downloads with an AppleScrit Folder Action; contact me if you have success or would like to try.
+gpxutils itself is cross-platform by default. It should be possible to automate GPS downloads with an AppleScript Folder Action; contact me if you have success or would like to try.
 
 #### Linux
 
 gpxutils itself is cross-platform by default. It should be possible to automate GPS downloads with a udev script; contact me if you have success or would like to try.
 
 ### Changelog
+
+#### 2.0.2
+
+- Workaround for trailing quote in output path
+- Better output path error handling
 
 #### 2.0.1
 
