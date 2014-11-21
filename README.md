@@ -112,6 +112,11 @@ gpxutils itself is cross-platform by default. It should be possible to automate 
 
 ### Changelog
 
+#### 2.0.3
+
+- Display default options in help message
+- Add version message
+
 #### 2.0.2
 
 - Workaround for trailing quote in output path
