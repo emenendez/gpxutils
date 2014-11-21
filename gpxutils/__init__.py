@@ -7,6 +7,8 @@ import gpxutils.gpxpull as GP
 gpxclean = GC.gpxclean
 gpxpull = GP.gpxpull
 
+__version__ = '2.0.3'
+
 _DEFAULTS = {
     'split': 300,
     'output': Path('.'),
@@ -38,6 +40,7 @@ def ArgumentParser(description):
 
     parser = argparse.ArgumentParser(description=description)
 
+    parser.add_argument('--version', action='version', version='gpxutils {}'.format(__version__))
     parser.add_argument('-s', '--split', type=int, default=_DEFAULTS.get('split'),
         help='split tracks if points are greater than this many meters apart; use 0 for no splitting (default: %(default)d)')
     parser.add_argument('-o', '--output', type=Path, default=_DEFAULTS.get('output'),
