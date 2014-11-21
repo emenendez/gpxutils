@@ -155,10 +155,7 @@ def gpxclean(input, **options):
 
 
 def main():
-    import argparse
-
-    parser = argparse.ArgumentParser(description='Clean GPX tracks and split into multiple files.')
-    gpxutils.addArguments(parser)
+    parser = gpxutils.ArgumentParser(description='Clean GPX tracks and split into multiple files.')
     parser.add_argument('input', nargs='+', type=Path, help='a .gpx file to clean and split')
     args = parser.parse_args()
 

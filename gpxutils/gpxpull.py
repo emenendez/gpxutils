@@ -24,11 +24,8 @@ def gpxpull(drive, **options):
 
 
 def main():
-    import argparse
-
-    parser = argparse.ArgumentParser(description='Pull GPX files from modern Garmin GPSes, clean, and split.')
-    gpxutils.addArguments(parser)
-    parser.add_argument('-p', '--pause', action='store_true', help='Prompt the user to press a key before exiting.')
+    parser = gpxutils.ArgumentParser(description='Pull GPX files from modern Garmin GPSes, clean, and split.')
+    parser.add_argument('-p', '--pause', action='store_true', help='prompt the user to press a key before exiting (default: %(default)s)')
     parser.add_argument('drive', nargs='+', type=Path, help='drive name of a USB-connected Garmin GPS')
     args = parser.parse_args()
 
