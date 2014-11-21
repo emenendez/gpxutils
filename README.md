@@ -19,9 +19,9 @@ Usage
 ```
 $ gpxclean --help
 
-usage: gpxclean.py [-h] [-s SPLIT] [-o OUTPUT] [-t] [-n] [-l LENGTH]
-                   [-f [PREFIX]] [-d] [-i]
-                   input [input ...]
+usage: gpxclean [-h] [--version] [-s SPLIT] [-o OUTPUT] [-t] [-n] [-l LENGTH]
+                [-f [PREFIX]] [-d] [-i]
+                input [input ...]
 
 Clean GPX tracks and split into multiple files.
 
@@ -30,29 +30,32 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
+  --version             show program's version number and exit
   -s SPLIT, --split SPLIT
-                        Split tracks if points are greater than this distance
-                        apart (meters).
+                        split tracks if points are greater than this many
+                        meters apart; use 0 for no splitting (default: 300)
   -o OUTPUT, --output OUTPUT
-                        Directory to place output .gpx files.
-  -t, --no-time         Do not use time in output filenames.
-  -n, --name            Use track/waypoint name in output filenames.
+                        directory to place output .gpx files (default: .)
+  -t, --no-time         do not use time in output filenames (default: False)
+  -n, --name            use track/waypoint name in output filenames (default:
+                        False)
   -l LENGTH, --max-filename-length LENGTH
-                        Truncate output filename to this number of characters.
+                        truncate output filename to this number of characters
+                        (default: 50)
   -f [PREFIX], --prefix [PREFIX]
-                        Add a prefix to all files, or prompt if none is
-                        specified.
+                        add a prefix to all files, or prompt if none is
+                        specified (default: no prefix)
   -d, --date-directories
-                        Put files in subdirectories by date.
-  -i, --interactive     Prompt to save/discard each track.
+                        put files in subdirectories by date (default: False)
+  -i, --interactive     prompt to save/discard each track (default: False)
 ```
 
 ```
 $ gpxpull --help
 
-usage: gpxpull.py [-h] [-s SPLIT] [-o OUTPUT] [-t] [-n] [-l LENGTH]
-                  [-f [PREFIX]] [-d] [-i] [-p]
-                  drive [drive ...]
+usage: gpxpull [-h] [--version] [-s SPLIT] [-o OUTPUT] [-t] [-n] [-l LENGTH]
+               [-f [PREFIX]] [-d] [-i] [-p]
+               drive [drive ...]
 
 Pull GPX files from modern Garmin GPSes, clean, and split.
 
@@ -61,22 +64,26 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
+  --version             show program's version number and exit
   -s SPLIT, --split SPLIT
-                        Split tracks if points are greater than this distance
-                        apart (meters).
+                        split tracks if points are greater than this many
+                        meters apart; use 0 for no splitting (default: 300)
   -o OUTPUT, --output OUTPUT
-                        Directory to place output .gpx files.
-  -t, --no-time         Do not use time in output filenames.
-  -n, --name            Use track/waypoint name in output filenames.
+                        directory to place output .gpx files (default: .)
+  -t, --no-time         do not use time in output filenames (default: False)
+  -n, --name            use track/waypoint name in output filenames (default:
+                        False)
   -l LENGTH, --max-filename-length LENGTH
-                        Truncate output filename to this number of characters.
+                        truncate output filename to this number of characters
+                        (default: 50)
   -f [PREFIX], --prefix [PREFIX]
-                        Add a prefix to all files, or prompt if none is
-                        specified.
+                        add a prefix to all files, or prompt if none is
+                        specified (default: no prefix)
   -d, --date-directories
-                        Put files in subdirectories by date.
-  -i, --interactive     Prompt to save/discard each track.
-  -p, --pause           Prompt the user to press a key before exiting.
+                        put files in subdirectories by date (default: False)
+  -i, --interactive     prompt to save/discard each track (default: False)
+  -p, --pause           prompt the user to press a key before exiting
+                        (default: False)
 ```
 
 ### Requirements
