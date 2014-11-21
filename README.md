@@ -119,6 +119,11 @@ gpxutils itself is cross-platform by default. It should be possible to automate 
 
 ### Changelog
 
+#### 2.0.4
+
+- Fixed relative path bug on Windows
+- Allow drive letters without trailing ':' on Windows
+
 #### 2.0.3
 
 - Display default options in help message

@@ -7,7 +7,7 @@ here = path.abspath(path.dirname(__file__))
 setup(
     name='gpxutils',
 
-    version='2.0.3',
+    version='2.0.4',
 
     description='Tools for working with GPX files',
     long_description="""

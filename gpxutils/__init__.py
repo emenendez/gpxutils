@@ -7,7 +7,7 @@ import gpxutils.gpxpull as GP
 gpxclean = GC.gpxclean
 gpxpull = GP.gpxpull
 
-__version__ = '2.0.3'
+__version__ = '2.0.4'
 
 _DEFAULTS = {
     'split': 300,
