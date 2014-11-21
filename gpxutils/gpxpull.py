@@ -1,6 +1,6 @@
 #!python3
 
-from pathlib import Path
+from pathlib import Path, WindowsPath
 import gpxutils
 
 
@@ -17,6 +17,13 @@ def processFiles(gpxDir, **options):
 
 def gpxpull(drive, **options):
     gpxutils.applyDefaults(options)
+
+    # Hack to create proper absolute drive paths on Windows
+    if not drive.is_absolute() and isinstance(drive, WindowsPath):
+        if len(str(drive)) == 1:
+            drive = Path(str(drive) + ':/')
+        elif len(str(drive)) == 2 and str(drive)[1] == ':':
+            drive /= '/'
 
     gpxDir = drive / 'Garmin' / 'GPX'
     if gpxDir.exists():
