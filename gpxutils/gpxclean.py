@@ -158,16 +158,8 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description='Clean GPX tracks and split into multiple files.')
-    parser.add_argument('-s', '--split', type=int, default=gpxutils.getDefault('split'), help='Split tracks if points are greater than this distance apart (meters).')
-    parser.add_argument('-o', '--output', type=Path, default=gpxutils.getDefault('output'), help='Directory to place output .gpx files.')
-    parser.add_argument('-t', '--no-time', action='store_false', dest='time', help='Do not use time in output filenames.')
-    parser.add_argument('-n', '--name', action='store_true', dest='name', help='Use track/waypoint name in output filenames.')
-    parser.add_argument('-l', '--max-filename-length', type=int, dest='length', default=gpxutils.getDefault('max_filename_length'), help='Truncate output filename to this number of characters.')
-    parser.add_argument('-f', '--prefix', nargs='?', default=gpxutils.getDefault('file_prefix'), const=str(), help='Add a prefix to all files, or prompt if none is specified.')
-    parser.add_argument('-d', '--date-directories', action='store_true', dest='date', help='Put files in subdirectories by date.')
-    parser.add_argument('-i', '--interactive', action='store_true', dest='interactive', help='Prompt to save/discard each track.')
+    gpxutils.addArguments(parser)
     parser.add_argument('input', nargs='+', type=Path, help='a .gpx file to clean and split')
-    parser.set_defaults(time=gpxutils.getDefault('output_time'), name=gpxutils.getDefault('output_name'), date=gpxutils.getDefault('date'), interactive=gpxutils.getDefault('interactive'))
     args = parser.parse_args()
 
     if args.prefix == str():
