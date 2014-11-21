@@ -31,7 +31,7 @@ def main():
 
     if args.pause:
         import atexit
-        atexit.register(lambda: input('\nPress ENTER to exit...'))
+        atexit.register(lambda: input('\n[Press ENTER to exit]'))
 
     if args.prefix == str():
         args.prefix = input('File prefix: ')
