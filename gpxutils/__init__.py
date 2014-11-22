@@ -18,7 +18,9 @@ _DEFAULTS = {
     'file_prefix': None,
     'date': False,
     'interactive': False,
+    'gps': 'usb',
 }
+
 
 def _getPrefixDefault():
     if _DEFAULTS.get('file_prefix') is None:
@@ -27,6 +29,10 @@ def _getPrefixDefault():
         return 'prompt'
     else:
         return _DEFAULTS.get('file_prefix')
+
+
+def getDefault(option):
+    return _DEFAULTS.get(option)
 
 
 def applyDefaults(options):
@@ -41,23 +47,23 @@ def ArgumentParser(description):
     parser = argparse.ArgumentParser(description=description)
 
     parser.add_argument('--version', action='version', version='gpxutils {}'.format(__version__))
-    parser.add_argument('-s', '--split', type=int, default=_DEFAULTS.get('split'),
+    parser.add_argument('-s', '--split', type=int, default=getDefault('split'),
         help='split tracks if points are greater than this many meters apart; use 0 for no splitting (default: %(default)d)')
-    parser.add_argument('-o', '--output', type=Path, default=_DEFAULTS.get('output'),
+    parser.add_argument('-o', '--output', type=Path, default=getDefault('output'),
         help='directory to place output .gpx files (default: %(default)s)')
     parser.add_argument('-t', '--no-time', action='store_false', dest='time',
-        help='do not use time in output filenames (default: {})'.format(not _DEFAULTS.get('output_time')))
+        help='do not use time in output filenames (default: {})'.format(not getDefault('output_time')))
     parser.add_argument('-n', '--name', action='store_true', dest='name',
         help='use track/waypoint name in output filenames (default: %(default)s)')
-    parser.add_argument('-l', '--max-filename-length', type=int, dest='length', default=_DEFAULTS.get('max_filename_length'),
+    parser.add_argument('-l', '--max-filename-length', type=int, dest='length', default=getDefault('max_filename_length'),
         help='truncate output filename to this number of characters (default: %(default)d)')
-    parser.add_argument('-f', '--prefix', nargs='?', default=_DEFAULTS.get('file_prefix'), const=str(),
+    parser.add_argument('-f', '--prefix', nargs='?', default=getDefault('file_prefix'), const=str(),
         help='add a prefix to all files, or prompt if none is specified (default: {})'.format(_getPrefixDefault()))
     parser.add_argument('-d', '--date-directories', action='store_true', dest='date',
         help='put files in subdirectories by date (default: %(default)s)')
     parser.add_argument('-i', '--interactive', action='store_true', dest='interactive',
         help='prompt to save/discard each track (default: %(default)s)')
-    parser.set_defaults(time=_DEFAULTS.get('output_time'), name=_DEFAULTS.get('output_name'),
-        date=_DEFAULTS.get('date'), interactive=_DEFAULTS.get('interactive'))
+    parser.set_defaults(time=getDefault('output_time'), name=getDefault('output_name'),
+        date=getDefault('date'), interactive=getDefault('interactive'))
 
     return parser

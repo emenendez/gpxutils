@@ -31,9 +31,12 @@ def gpxpull(drive, **options):
 
 
 def main():
-    parser = gpxutils.ArgumentParser(description='Pull GPX files from modern Garmin GPSes, clean, and split.')
-    parser.add_argument('-p', '--pause', action='store_true', help='prompt the user to press a key before exiting (default: %(default)s)')
-    parser.add_argument('drive', nargs='+', type=Path, help='drive name of a USB-connected Garmin GPS')
+    parser = gpxutils.ArgumentParser(description='Pull GPX files from GPSes, clean, and split.')
+    parser.add_argument('-p', '--pause', action='store_true',
+        help='prompt the user to press a key before exiting (default: %(default)s)')
+    parser.add_argument('-g', '--gps', default=gpxutils.getDefault('gps'),
+        help='GPSBabel input format; use \'usb\' for Garmin USB mass-storage GPSes (default: %(default)s)')
+    parser.add_argument('drive', nargs='+', help='drive name of a mass-storage GPS, or GPSBabel input filename')
     args = parser.parse_args()
 
     if args.pause:
@@ -45,7 +48,7 @@ def main():
 
     for drive in args.drive:
         gpxpull(drive=drive, split=args.split, output=args.output, output_time=args.time, output_name=args.name, max_filename_length=args.length,
-                file_prefix=args.prefix, date=args.date, interactive=args.interactive)
+                file_prefix=args.prefix, date=args.date, interactive=args.interactive, gps=args.gps)
 
 
 if __name__ == "__main__":
