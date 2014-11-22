@@ -1,6 +1,9 @@
 #!python3
 
 from pathlib import Path, WindowsPath
+import subprocess
+import sys
+import tempfile
 import gpxutils
 
 
@@ -18,16 +21,37 @@ def processFiles(gpxDir, **options):
 def gpxpull(drive, **options):
     gpxutils.applyDefaults(options)
 
-    # Hack to create proper absolute drive paths on Windows
-    if not drive.is_absolute() and isinstance(drive, WindowsPath):
-        if len(str(drive)) == 1:
-            drive = Path(str(drive) + ':/')
-        elif len(str(drive)) == 2 and str(drive)[1] == ':':
-            drive /= '/'
+    if options['gps'].lower() == 'usb':
+        drive = Path(drive)
 
-    gpxDir = drive / 'Garmin' / 'GPX'
-    if gpxDir.exists():
-        processFiles(gpxDir, **options)
+        # Hack to create proper absolute drive paths on Windows
+        if not drive.is_absolute() and isinstance(drive, WindowsPath):
+            if len(str(drive)) == 1:
+                drive = Path(str(drive) + ':/')
+            elif len(str(drive)) == 2 and str(drive)[1] == ':':
+                drive /= '/'
+
+        gpxDir = drive / 'Garmin' / 'GPX'
+        if gpxDir.exists():
+            processFiles(gpxDir, **options)
+
+    else:
+        # Create temporary file
+        tempFile = tempfile.NamedTemporaryFile(delete=False)
+        tempFile.close()
+        tempFile = Path(tempFile.name)
+
+        # Call gpsbabel to pull tracks and waypoints
+        try:
+            subprocess.check_call(['gpsbabel', '-t', '-w', '-i', options['gps'], '-f', drive, '-o', 'gpx', '-F', str(tempFile)])
+        except Exception as e:
+            raise e
+        else:
+            # Call gpxclean on temporary file
+            gpxutils.gpxclean(tempFile, **options)
+        finally:
+            # Clean up tempfile
+            tempFile.unlink()
 
 
 def main():
@@ -47,8 +71,13 @@ def main():
         args.prefix = input('File prefix: ')
 
     for drive in args.drive:
-        gpxpull(drive=drive, split=args.split, output=args.output, output_time=args.time, output_name=args.name, max_filename_length=args.length,
-                file_prefix=args.prefix, date=args.date, interactive=args.interactive, gps=args.gps)
+        try:
+            gpxpull(drive=drive, split=args.split, output=args.output, output_time=args.time, output_name=args.name, max_filename_length=args.length,
+                    file_prefix=args.prefix, date=args.date, interactive=args.interactive, gps=args.gps)
+        except subprocess.CalledProcessError:
+            print('Error: GPSBabel encountered an error', file=sys.stderr)
+        except OSError:
+            print('Error: could not find GPSBabel', file=sys.stderr)
 
 
 if __name__ == "__main__":
