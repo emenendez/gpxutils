@@ -35,9 +35,8 @@ def makePath(base_dir, base_name, i, **options):
             base_dir.mkdir(parents=True)
         if not base_dir.is_dir():
             raise Exception
-    except Exception:
-        print('Error: could not create output directory {}'.format(base_dir), file=sys.stderr)
-        exit()
+    except Exception as e:
+        raise gpxutils.OutputDirectoryError(base_dir)
 
     if i == 0:
         if options['max_filename_length'] != 0:
@@ -163,8 +162,11 @@ def main():
         args.prefix = input('File prefix: ')
 
     for infile in args.input:
-        gpxclean(input=infile, split=args.split, output=args.output, output_time=args.time, output_name=args.name, max_filename_length=args.length,
-                 file_prefix=args.prefix, date=args.date, interactive=args.interactive)
+        try:
+            gpxclean(input=infile, split=args.split, output=args.output, output_time=args.time, output_name=args.name, max_filename_length=args.length,
+                     file_prefix=args.prefix, date=args.date, interactive=args.interactive)
+        except gpxutils.OutputDirectoryError as e:
+            print('Error: could not create output directory {}'.format(e.filename), file=sys.stderr)
 
 
 if __name__ == "__main__":

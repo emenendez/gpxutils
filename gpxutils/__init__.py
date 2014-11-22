@@ -22,6 +22,11 @@ _DEFAULTS = {
 }
 
 
+class OutputDirectoryError(OSError):
+    def __init__(self, filename):
+        self.filename = filename
+
+
 def _getPrefixDefault():
     if _DEFAULTS.get('file_prefix') is None:
         return 'no prefix'
