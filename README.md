@@ -1,7 +1,7 @@
 gpxutils
 ========
 
-gpxutils is a Python module and set of command-line tools to simplify working with Garmin GPSes and GPX files. It will help you automatically download GPS tracks and waypoints from a modern Garmin GPS and clean up the files, making your GPS workflow much faster.
+gpxutils is a Python module and set of command-line tools to simplify working with GPSes and GPX files. It will help you automatically download GPS tracks and waypoints from a GPS device and clean up the files, making your GPS workflow much faster.
 
 gpxclean
 --------
@@ -11,7 +11,7 @@ Remove "tails" from GPX tracks and save each track as an individual file with fl
 gpxpull
 -------
 
-Pull files from modern Garmin GPSes, clean, and split. On Windows, with the help of the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html), gpxpull can automatically download and clean GPX files from a USB-connected Garmin GPS.
+Pull files from GPSes, clean, and split. On Windows, with the help of the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html), gpxpull can automatically download and clean GPX files from a USB-connected Garmin GPS.
 
 Usage
 -----
@@ -54,13 +54,14 @@ optional arguments:
 $ gpxpull --help
 
 usage: gpxpull [-h] [--version] [-s SPLIT] [-o OUTPUT] [-t] [-n] [-l LENGTH]
-               [-f [PREFIX]] [-d] [-i] [-p]
+               [-f [PREFIX]] [-d] [-i] [-p] [-g GPS]
                drive [drive ...]
 
-Pull GPX files from modern Garmin GPSes, clean, and split.
+Pull GPX files from GPSes, clean, and split.
 
 positional arguments:
-  drive                 drive name of a USB-connected Garmin GPS
+  drive                 drive name of a mass-storage GPS, or GPSBabel input
+                        filename
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -84,6 +85,8 @@ optional arguments:
   -i, --interactive     prompt to save/discard each track (default: False)
   -p, --pause           prompt the user to press a key before exiting
                         (default: False)
+  -g GPS, --gps GPS     GPSBabel input format; use 'usb' for Garmin USB mass-
+                        storage GPSes (default: usb)
 ```
 
 ### Requirements
@@ -118,6 +121,10 @@ gpxutils itself is cross-platform by default. It should be possible to automate 
 gpxutils itself is cross-platform by default. It should be possible to automate GPS downloads with a udev script; contact me if you have success or would like to try.
 
 ### Changelog
+
+#### 2.1.0
+
+- Use GPSBabel to download tracks and waypoints from a variety of GPSes
 
 #### 2.0.4
 
