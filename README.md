@@ -19,8 +19,8 @@ Usage
 ```
 $ gpxclean --help
 
-usage: gpxclean [-h] [--version] [-s SPLIT] [-o OUTPUT] [-t] [-n] [-l LENGTH]
-                [-f [PREFIX]] [-d] [-i]
+usage: gpxclean [-h] [--version] [-s SPLIT] [-o OUTPUT] [-F] [-t] [-n]
+                [-l LENGTH] [-f [PREFIX]] [-d] [-i]
                 input [input ...]
 
 Clean GPX tracks and split into multiple files.
@@ -36,9 +36,11 @@ optional arguments:
                         meters apart; use 0 for no splitting (default: 300)
   -o OUTPUT, --output OUTPUT
                         directory to place output .gpx files (default: .)
-  -t, --no-time         do not use time in output filenames (default: False)
-  -n, --name            use track/waypoint name in output filenames (default:
+  -F, --filename        use input filename in output filenames (default:
                         False)
+  -t, --no-time         do not use time in output filenames (default: False)
+  -n, --no-name         do not use track/waypoint name in output filenames
+                        (default: False)
   -l LENGTH, --max-filename-length LENGTH
                         truncate output filename to this number of characters
                         (default: 50)
@@ -53,8 +55,8 @@ optional arguments:
 ```
 $ gpxpull --help
 
-usage: gpxpull [-h] [--version] [-s SPLIT] [-o OUTPUT] [-t] [-n] [-l LENGTH]
-               [-f [PREFIX]] [-d] [-i] [-p] [-g GPS]
+usage: gpxpull [-h] [--version] [-s SPLIT] [-o OUTPUT] [-F] [-t] [-n]
+               [-l LENGTH] [-f [PREFIX]] [-d] [-i] [-p] [-g GPS]
                drive [drive ...]
 
 Pull GPX files from GPSes, clean, and split.
@@ -71,9 +73,11 @@ optional arguments:
                         meters apart; use 0 for no splitting (default: 300)
   -o OUTPUT, --output OUTPUT
                         directory to place output .gpx files (default: .)
-  -t, --no-time         do not use time in output filenames (default: False)
-  -n, --name            use track/waypoint name in output filenames (default:
+  -F, --filename        use input filename in output filenames (default:
                         False)
+  -t, --no-time         do not use time in output filenames (default: False)
+  -n, --no-name         do not use track/waypoint name in output filenames
+                        (default: False)
   -l LENGTH, --max-filename-length LENGTH
                         truncate output filename to this number of characters
                         (default: 50)
