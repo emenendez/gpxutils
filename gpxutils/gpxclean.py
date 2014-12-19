@@ -9,9 +9,18 @@ import sys
 import gpxutils
 
 
-def prompt(copy, time):
-    default = time.date() == datetime.now().date()
-    answer = input('Save {}? [{}] '.format(copy, 'Y/n' if default else 'y/N'))
+def prompt(type, name, filename, time):
+    copy = 'Save {} '.format(type)
+    if name is not None and name != str():
+        copy += '{} '.format(name)
+    if time is not None:
+        default = time.date() == datetime.now().date()
+        copy += 'from {} '.format(time.strftime('%Y-%m-%d %H:%M'))
+    else:
+        default = False
+    copy += '? [{}]'.format('Y/n' if default else 'y/N')
+
+    answer = input(copy)
     answer = answer.strip().lower()
     if answer == str():
         return default
@@ -95,7 +104,7 @@ def writeAndCreateNewFile(segment, base_name, track_name=None, **options):
         
         time = segment.get_time_bounds().start_time
 
-        keep = (not options['interactive']) or prompt('track {} from {}.gpx @ {}'.format(track_name, base_name, time.strftime('%Y-%m-%d %H:%M')), time)
+        keep = (not options['interactive']) or prompt('track', track_name, base_name, time)
         if keep:
             outfile = createUniqueFile(base_name, 'trk', time, track_name, **options)
             with outfile.open('w') as output:
@@ -114,7 +123,7 @@ def writeWaypoint(waypoint, base_name, **options):
         # Append waypoint
         gpx.waypoints.append(waypoint)
 
-        keep = (not options['interactive']) or prompt('waypoint {} from {}.gpx @ {}'.format(waypoint.name, base_name, waypoint.time.strftime('%Y-%m-%d %H:%M')), waypoint.time)
+        keep = (not options['interactive']) or prompt('waypoint', waypoint.name, base_name, waypoint.time)
         if keep:
             outfile = createUniqueFile(base_name, 'wpt', waypoint.time, waypoint.name, **options)
             with outfile.open('w') as output:
