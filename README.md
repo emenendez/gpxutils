@@ -122,9 +122,10 @@ gpxutils itself is cross-platform by default. It should be possible to automate 
 
 ### Changelog
 
-#### 2.1.0
+#### 3.0.0
 
 - Use GPSBabel to download tracks and waypoints from a variety of GPSes
+- Change default file naming
 
 #### 2.0.4
 

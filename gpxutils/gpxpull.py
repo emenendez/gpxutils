@@ -72,8 +72,8 @@ def main():
 
     for drive in args.drive:
         try:
-            gpxpull(drive=drive, split=args.split, output=args.output, output_time=args.time, output_name=args.name, max_filename_length=args.length,
-                    file_prefix=args.prefix, date=args.date, interactive=args.interactive, gps=args.gps)
+            gpxpull(drive=drive, split=args.split, output=args.output, output_filename=args.filename, output_time=args.time, output_name=args.name, 
+                    max_filename_length=args.length, file_prefix=args.prefix, date=args.date, interactive=args.interactive, gps=args.gps)
         except gpxutils.OutputDirectoryError as e:
             print('Error: could not create output directory {}'.format(e.filename), file=sys.stderr)
         except subprocess.CalledProcessError:

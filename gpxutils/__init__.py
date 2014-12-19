@@ -7,13 +7,14 @@ import gpxutils.gpxpull as GP
 gpxclean = GC.gpxclean
 gpxpull = GP.gpxpull
 
-__version__ = '2.1.0'
+__version__ = '3.0.0'
 
 _DEFAULTS = {
     'split': 300,
     'output': Path('.'),
+    'output_filename': False,
     'output_time': True,
-    'output_name': False,
+    'output_name': True,
     'max_filename_length': 50,
     'file_prefix': None,
     'date': False,
@@ -56,10 +57,12 @@ def ArgumentParser(description):
         help='split tracks if points are greater than this many meters apart; use 0 for no splitting (default: %(default)d)')
     parser.add_argument('-o', '--output', type=Path, default=getDefault('output'),
         help='directory to place output .gpx files (default: %(default)s)')
+    parser.add_argument('-F', '--filename', action='store_true', dest='filename',
+        help='use input filename in output filenames (default: %(default)s)')
     parser.add_argument('-t', '--no-time', action='store_false', dest='time',
         help='do not use time in output filenames (default: {})'.format(not getDefault('output_time')))
-    parser.add_argument('-n', '--name', action='store_true', dest='name',
-        help='use track/waypoint name in output filenames (default: %(default)s)')
+    parser.add_argument('-n', '--no-name', action='store_false', dest='name',
+        help='do not use track/waypoint name in output filenames (default: {})'.format(not getDefault('output_name')))
     parser.add_argument('-l', '--max-filename-length', type=int, dest='length', default=getDefault('max_filename_length'),
         help='truncate output filename to this number of characters (default: %(default)d)')
     parser.add_argument('-f', '--prefix', nargs='?', default=getDefault('file_prefix'), const=str(),
@@ -68,7 +71,7 @@ def ArgumentParser(description):
         help='put files in subdirectories by date (default: %(default)s)')
     parser.add_argument('-i', '--interactive', action='store_true', dest='interactive',
         help='prompt to save/discard each track (default: %(default)s)')
-    parser.set_defaults(time=getDefault('output_time'), name=getDefault('output_name'),
+    parser.set_defaults(filename=getDefault('output_filename'), time=getDefault('output_time'), name=getDefault('output_name'),
         date=getDefault('date'), interactive=getDefault('interactive'))
 
     return parser

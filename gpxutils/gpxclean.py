@@ -51,11 +51,12 @@ def createUniqueFile(base_name, name_postfix, time=None, name=None, **options):
     gpxutils.applyDefaults(options)
 
     i = 0
+    file_name = str()
     if options['file_prefix'] is not None:
-        file_name = options['file_prefix']
-    else:
-        file_name = base_name
-    file_name += '_' + name_postfix
+        file_name += options['file_prefix'] + '_'
+    if options['output_filename']:
+        file_name += base_name + '_'
+    file_name += name_postfix
     if options['output_time'] and time:
         file_name += '_' + time.strftime('%Y-%m-%d %H.%M.%S')
     if options['output_name'] and name:
@@ -163,8 +164,8 @@ def main():
 
     for infile in args.input:
         try:
-            gpxclean(input=infile, split=args.split, output=args.output, output_time=args.time, output_name=args.name, max_filename_length=args.length,
-                     file_prefix=args.prefix, date=args.date, interactive=args.interactive)
+            gpxclean(input=infile, split=args.split, output=args.output, output_filename=args.filename, output_time=args.time, output_name=args.name,
+                     max_filename_length=args.length, file_prefix=args.prefix, date=args.date, interactive=args.interactive)
         except gpxutils.OutputDirectoryError as e:
             print('Error: could not create output directory {}'.format(e.filename), file=sys.stderr)
 
