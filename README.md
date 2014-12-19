@@ -102,7 +102,7 @@ optional arguments:
 
 #### Windows
 
-1. Install [Python 3.4](https://www.python.org/downloads/) or newer. Be sure to enable the "Add python.exe to Path" option.
+1. Install [Python 3.4](https://www.python.org/downloads/) or newer. Be sure to enable the "Add python.exe to Path" option. A reboot may be necessary after this step.
 
 2. Install gpxutils from a Windows command prompt:  
    `pip3 install gpxutils`
