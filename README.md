@@ -97,6 +97,7 @@ optional arguments:
 
 - [Python 3.4](https://www.python.org/) or newer
 - [gpxpy](https://github.com/tkrajina/gpxpy)
+- [GPSBabel](http://www.gpsbabel.org/) (optional)
 
 ### Installation
 
@@ -107,9 +108,11 @@ optional arguments:
 2. Install gpxutils from a Windows command prompt:  
    `pip3 install gpxutils`
 
-3. Install the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html).
+3. Install [GPSBabel](http://www.gpsbabel.org/) and ensure gpsbabel.exe is in your system path.
 
-4. Create a new text file with the following contents and save it as `c:\Program Files\USBDLM\USBDLM.ini`:
+4. Install the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html).
+
+5. Create a new text file with the following contents and save it as `c:\Program Files\USBDLM\USBDLM.ini`:
    ```
 [OnArrival1]
 FileExists=%drive%\Garmin\GPX
