@@ -112,12 +112,7 @@ optional arguments:
 
 4. Install the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html).
 
-5. Create a new text file with the following contents and save it as `c:\Program Files\USBDLM\USBDLM.ini`:
-   ```
-[OnArrival1]
-FileExists=%drive%\Garmin\GPX
-open="gpxpull" -o "C:\GPX-out" %drive%
-```
+5. Download [USBDLM.ini](raw/master/USBDLM.ini) and save it as `c:\Program Files\USBDLM\USBDLM.ini`.
 
 #### Mac
 
