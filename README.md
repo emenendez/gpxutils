@@ -112,7 +112,7 @@ optional arguments:
 
 4. Install the [USB Drive Letter Manager](http://www.uwe-sieber.de/usbdlm_e.html).
 
-5. Download [USBDLM.ini](raw/master/USBDLM.ini) and save it as `c:\Program Files\USBDLM\USBDLM.ini`.
+5. Download [USBDLM.ini](../../raw/master/USBDLM.ini) and save it as `c:\Program Files\USBDLM\USBDLM.ini`.
 
 #### Mac
 
